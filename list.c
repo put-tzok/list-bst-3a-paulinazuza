@@ -27,8 +27,14 @@ struct node* list_insert(int value) {
 }
 
 struct node* list_search(int value) {
-    // TODO: implement
-    return NULL;
+    struct node *box;
+    box = head;
+    while (box!=NULL && box->key!=value)
+    {
+        box = box->next;
+    }
+    
+    return box;
 }
 
 void list_delete(int value) {
