@@ -61,8 +61,16 @@ void list_delete(int value) {
 }
 
 unsigned int list_size() {
-    // TODO: implement
-    return 0;
+    int size = 0;
+     struct node *iter;
+     iter = head;
+     while(iter != NULL)
+     {
+         size += 1;
+         iter = iter->next;
+     }
+
+    return size;
 }
 
 /*
