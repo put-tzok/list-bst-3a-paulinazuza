@@ -38,7 +38,26 @@ struct node* list_search(int value) {
 }
 
 void list_delete(int value) {
-    // TODO: implement
+    if (head->key == value)     //sprawdzam czy usuwany element jest pierwszy, jeśli tak usuwam i następny staje się głową
+    {
+        head = head->next;
+    }
+    else                        //w prev ustawiam głowę, a w iter element następny
+    {
+        struct node *prev;
+        prev = head;
+        struct node *iter ;
+        iter = head->next;
+        while (iter != NULL && iter->key != value) //dopóki nie skończy się lista i nie natrafimy na element o danej wartości,
+        {                                          //przesuwamy prev i iter o 1 do przodu
+            prev = iter;
+            iter = iter->next;
+        }
+        if (iter != NULL)                     // usuwam element iter więc elemnet na który wskazuje prev jest tym samym elementem który byłby wskazywany przez itera
+        {
+            prev->next = iter->next;
+        }
+    }
 }
 
 unsigned int list_size() {
