@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-unsigned int ns[] = { 10, /* TODO: fill values which will be used as lists' sizes */ };
+unsigned int ns[] = {4000,8000,12000,16000,20000,24000,28000,32000,36000,40000};
 
 // each list node contains an integer key value and pointer to next list node
 struct node {
@@ -17,8 +17,13 @@ struct node *head = NULL;
 
 
 struct node* list_insert(int value) {
-    // TODO: implement
-    return NULL;
+    struct node *new_box;
+    new_box = (struct node*) malloc(sizeof(struct node));
+    new_box->key= value;
+    new_box->next = head;
+    head = new_box;
+
+    return new_box;
 }
 
 struct node* list_search(int value) {
