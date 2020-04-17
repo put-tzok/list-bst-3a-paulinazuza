@@ -162,9 +162,31 @@ void insert_random(int *t, int n) {
     }
 }
 
-void insert_binary(int *t, int n) {
-    // TODO: implement
+void tree_insert_binary(int *t,int p,int r)
+{
+    if (p == r)
+    {
+        tree_insert(t[p]);
+    }
+    if (r - p == 1)
+    {
+        tree_insert(t[p]);
+        tree_insert(t[r]);
+    }
+    else
+    {
+        int q = p + (r - p)/2;
+        tree_insert(t[q]);
+        tree_insert_binary(t, p, q-1);
+        tree_insert_binary(t, q+1, r);
+    }
 }
+
+void insert_binary(int *t, int n)
+{
+   tree_insert_binary(t, 0, n-1);
+}
+
 
 char *insert_names[] = { "Increasing", "Random", "Binary" };
 void (*insert_functions[])(int*, int) = { insert_increasing, insert_random, insert_binary };
