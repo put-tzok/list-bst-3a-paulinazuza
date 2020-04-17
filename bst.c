@@ -30,8 +30,11 @@ struct node* tree_insert(int value) {
 
 
 struct node **tree_maximum(struct node **candidate) {
-    // TODO: implement
-    return NULL;
+    if((**candidate).right != NULL){
+           return tree_maximum(&(**candidate).right);
+        }
+
+    return candidate;
 }
 
 void tree_delete(int value) {
