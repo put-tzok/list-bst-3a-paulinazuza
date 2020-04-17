@@ -5,7 +5,7 @@
 #include <signal.h>
 #include <time.h>
 
-unsigned int ns[] = { 10, /* TODO: fill values which will be used as lists' sizes */ };
+unsigned int ns[] = {4000,8000,12000,16000,20000,24000,28000,32000,36000,40000};
 
 // each tree node contains an integer key and pointers to left and right children nodes
 struct node {
@@ -18,12 +18,28 @@ struct node {
 struct node *root = NULL;
 
 struct node **tree_search(struct node **candidate, int value) {
-    // TODO: implement
-    return NULL;
+    if(*candidate == NULL)
+    {
+        return candidate;
+    }
+    if (value < (**candidate).key)
+    {
+        return tree_search(&(**candidate).left, value);
+    }
+    if (value > (**candidate).key)
+    {
+        return tree_search(&(**candidate).right, value);
+    }
+    return candidate;
 }
 
 struct node* tree_insert(int value) {
-    // TODO: implement
+    struct node *createNode = malloc(sizeof(struct node));      //tworzę miejsce na nowy węzeł
+    createNode->key = value;                                    //przypisuje mu wartość i okreœlam że nie ma lewego ani prawego potomka
+    createNode->left = NULL;
+    createNode->right = NULL;
+    struct node **candidate = tree_search(&root, value);        //wyszukuje miejsce gdzie będzie pasowało value
+    *candidate = createNode;                                    //wartość wyszukanego kandydata ustawiam jako nowo stworzony węzeł
     return NULL;
 }
 
@@ -38,12 +54,37 @@ struct node **tree_maximum(struct node **candidate) {
 }
 
 void tree_delete(int value) {
-    // TODO: implement
+    struct node **candidate = tree_search(&root, value);                       //szukam miejsca gdzie znajduje się kasowana wartość
+    if ((**candidate).left == NULL && (**candidate).right == NULL)             //przypadek 1) jeśli nie ma węzłów potomnych poprostu usuwam (usuwam referencje do niego)
+    {
+        *candidate = NULL;
+    }
+    else if (((**candidate).left != NULL) && ((**candidate).right == NULL))    //przypadek 2.1) usuwany element posiada jednego- lewego potomka
+    {                                                                          //nie mogę poprostu usunąć referencji bo oderwę dziecko od drzewa
+        *candidate = (**candidate).left;                                       //wskaźnik wskazujący usuwaną liczbę wkazuje teraz na jego potomka
+    }
+    else if (((**candidate).left == NULL) && ((**candidate).right != NULL))    //przypadek 2.2) ta sama sytuacja- prawy potomek
+    {
+        *candidate = (**candidate).right;
+    }
+    else                                                                       //sytuacja gdzie usuwany węzeł ma dwóch potomków
+    {
+        struct node **maxcandidate;
+        maxcandidate = tree_maximum(&(**candidate).left);                      //szukam wartości maksymalnej w lewym poddrzewie
+        (**candidate).key = (**maxcandidate).key;                              //wartość usuwanego elementu jest zastępowana tym maxem
+        *maxcandidate = (**maxcandidate).left;                                 //w przypadku gdyby ten max miał lewe dziecko(prawego nigdy miał nie będzie
+    }                                                                          //bot wtedy ono byłoby maxem) to lewe dziecko idzie na miejsce rodzica
 }
 
 unsigned int tree_size(struct node *element) {
-    // TODO: implement
-    return 0;
+    if(element == NULL)
+      {
+        return 0;
+      }
+    else
+      {
+        return 1 + tree_size((*element).left) + tree_size((*element).right);
+      }
 }
 
 /*
